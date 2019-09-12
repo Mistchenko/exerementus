@@ -21,6 +21,6 @@ class AdminPrinterCount(admin.ModelAdmin):
 
 @admin.register(Part)
 class AdminPart(admin.ModelAdmin):
-    list_display = ('name', 'model',)
-    search_fields = ('name',)
+    list_display = ('name', 'model', 'resource',)
+    search_fields = ('name', 'model__name',)
 

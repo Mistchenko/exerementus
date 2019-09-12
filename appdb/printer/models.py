@@ -66,6 +66,13 @@ class Part(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Модель принтера",
     )
+
+    resource = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Ресурс ",
+        help_text='На какое количество страниц рассчитан'
+    )
+
     def __str__(self):
         return self.name
 

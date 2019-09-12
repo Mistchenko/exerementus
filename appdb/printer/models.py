@@ -7,7 +7,9 @@ class Printer(models.Model):
         verbose_name_plural = "Принтеры"
 
     serial = models.CharField(
-        max_length=32, db_index=True, verbose_name="Серийный номер"
+        max_length=32, db_index=True,
+        verbose_name="Серийный номер",
+        default=''
     )
     name = models.CharField(
         max_length=64, verbose_name="Наименование", default='Printer'
@@ -23,6 +25,9 @@ class Printer(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Модель принтера",
     )
+
+    def __str__(self):
+        return self.name
 
 
 class PrinterCount(models.Model):
@@ -61,6 +66,8 @@ class Part(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Модель принтера",
     )
+    def __str__(self):
+        return self.name
 
 
 class Model(models.Model):
@@ -72,3 +79,9 @@ class Model(models.Model):
         max_length=64, verbose_name="Наименование"
     )
 
+    class Meta:
+        verbose_name = "Модель принтера"
+        verbose_name_plural = "Модели принтеров"
+
+    def __str__(self):
+        return self.name

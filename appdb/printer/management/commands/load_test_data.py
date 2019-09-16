@@ -1,6 +1,7 @@
 import random
 from datetime import date, timedelta
 from django.core.management.base import BaseCommand
+from django.db.models import Subquery, OuterRef
 from printer.models import Model, Printer, Part, PrinterCount
 
 
@@ -18,11 +19,24 @@ class Command(BaseCommand):
 
     def select(self):
         self.stdout.write('Select result')
-        printer_list = Printer.objects.all()
+        d1 = date(2031, 8, 1)
+        d2 = date(2019, 8, 20)
+        pc = PrinterCount.objects.filter(printer=OuterRef('pk')).filter(date_getting__gte=d1).order_by('date_getting')
+        #pc_d1 = Subquery(PrinterCount.objects.filter(printer=OuterRef('pk')).filter(date_getting__gte=d1).order_by('date_getting').values('page_count_total')[:1])
+
+        # for pc in pc_d1:
+        #     print('pc_d1 =', pc)
+
+        printer_list = Printer.objects.annotate(
+            d1_pgt=Subquery(pc.values('page_count_total')[:1]),
+            d1_pgc=Subquery(pc.values('page_count_color')[:1]),
+        )
         for row in printer_list:
-            res = '{name}: {pg}'.format(
+            res = '{name}: {pg}  d1={d1_pgt} | {d1_pgc}'.format(
                 name=row.name,
-                pg=row.page_count_total
+                pg=row.page_count_total,
+                d1_pgt=row.d1_pgt,
+                d1_pgc=row.d1_pgc
             )
             self.stdout.write(res)
 

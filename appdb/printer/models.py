@@ -32,8 +32,8 @@ class Printer(models.Model):
 
 class PrinterCount(models.Model):
     class Meta:
-        verbose_name = "Счетчики принтера"
-        verbose_name_plural = "Счетчики принтеров"
+        verbose_name = "Регистр принтера"
+        verbose_name_plural = "Регистры принтеров"
 
     date_getting = models.DateField(verbose_name="Дата показателей")
 
